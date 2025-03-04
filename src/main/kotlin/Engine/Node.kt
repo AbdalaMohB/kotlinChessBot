@@ -18,21 +18,10 @@ public fun evaluateNode(node: Node): Int{
 }
 public fun evalBoard(node: Node): Int {
     var res=0
-    val kings: MutableList<Int> = mutableListOf(0, 0)
     for(row: List<Int> in node.board){
         for (p: Int in row){
-            if (p==50) {kings[0]=1}
-            if (p==-50) {kings[1]=1}
             res+=p
         }
-    }
-    if (kings[1]==0){
-        println("You Win!")
-        exitProcess(0)
-    }
-    else if (kings[0]==0){
-        println("You Lose!")
-        exitProcess(0)
     }
     return res
 }
