@@ -16,14 +16,15 @@ object MoveFilter {
         return mutableListOf()
     }
     public fun pawn(p:Int, moves:MutableList<Pair<Int, Int>>, board:List<List<Int>>): MutableList<Pair<Int, Int>> {
-        val side=p/abs(p)
+       val side=p/abs(p)
         val copy=moves.toMutableList()
         if (moves[2].first>-1 && moves[2].second>-1 && moves[2].first<8 && moves[2].second< 8 &&
             board[moves[2].first][moves[2].second]/side>=0) {moves[2]=Pair(-1, -1)}
         if (moves[1].first>-1 && moves[1].second>-1 && moves[1].first<8&& moves[1].second< 8
             && board[moves[1].first][moves[1].second]/side>=0) moves[1]=Pair(-1, -1)
-        if (board[moves[0].first][moves[0].second]!=0) moves[0]=Pair(-1, -1)
-        val acts=moves.filter { it.first!=-1}
+        if (moves[2].first>-1 && moves[2].second>-1 && moves[2].first<8 && moves[2].second< 8 &&
+            board[moves[0].first][moves[0].second]!=0) moves[0]=Pair(-1, -1)
+        val acts=moves.filter { it.first<=-1 || it.second<=-1 || it.first>=8 || it.second>=8 }
         return acts.toMutableList()
     }
     public fun knight(p:Int, moves:MutableList<Pair<Int, Int>>, board:List<List<Int>>): MutableList<Pair<Int, Int>> {
