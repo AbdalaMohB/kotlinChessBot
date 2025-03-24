@@ -20,8 +20,9 @@ public fun evalBoard(node: Node): Int {
     var res=0
     for(row: List<Int> in node.board){
         for (p: Int in row){
-            val piece=when(p){
-                8, 9, 10 -> 10
+             val piece=when(p){
+                8, 9 -> 10
+                -8, -9 -> -10
                 else -> p
             }
             res+=piece
