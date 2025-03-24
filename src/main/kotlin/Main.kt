@@ -59,7 +59,6 @@ fun main() {
     val bot=Bot(node, 6)
     while (true){
         bot.ponder()
-        bot.evaluate()
         current=bot.choose()
         printB(current)
         play(current)
