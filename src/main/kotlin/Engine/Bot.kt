@@ -4,9 +4,7 @@ import kotlin.random.Random
 import kotlin.system.exitProcess
 
 class Bot(var root:Node, private val maxdepth:Int=4) {
-    public fun evaluate(){
-        evaluateNode(root)
-    }
+
     public fun choose() : MutableList<MutableList<Int>> {
         val maxval=root.next.maxBy { it.value }.value
         val pruned=root.next.filter { it.value==maxval }
@@ -39,12 +37,13 @@ class Bot(var root:Node, private val maxdepth:Int=4) {
                 }
                 val b=makeMove(clonemat(node.board), y, x, i)
                 val n=Node(board = b, 0, mutableListOf())
+                ponder(n, depth+1)
+                if (depth==1) {
+                    evaluateNode(n)
+                    n.next.clear()
+                }
                 node.next.addLast(n)
             }
-        }
-        evaluateNode(node)
-        for (n in node.next){
-            ponder(n, depth+1)
         }
     }
     public fun counter(node: Node=root, depth: Int=1){
