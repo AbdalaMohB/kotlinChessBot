@@ -1,21 +1,24 @@
 package com.example.chess.Engine
 
-import kotlin.system.exitProcess
-const val PRESENT_IMPORTANCE=1
 data class Node(var board: MutableList<MutableList<Int>>, var value: Int, var next:MutableList<Node>)
-public fun evaluateNode(node: Node): Int{
+public fun evaluateNode(node: Node, side:Int): Int{
     if (node.next.size==0)
     {
         node.value= evalBoard(node)
         return node.value
     }
-    var sum=evalBoard(node)* PRESENT_IMPORTANCE
+    //var sum=evalBoard(node)/ PRESENT_IMPORTANCE
     for (next: Node in node.next){
-
-        sum+=evaluateNode(next)
+        evaluateNode(next, side*-1)
     }
-    node.value=sum
-    return sum
+    if (side==1){
+        val maxVal= node.next.maxByOrNull { it.value }!!.value
+        node.value=maxVal
+        return maxVal
+    }
+    val minVal= node.next.minByOrNull { it.value }!!.value
+    node.value=minVal
+    return minVal
 }
 public fun evalBoard(node: Node): Int {
     var res=0
@@ -23,7 +26,7 @@ public fun evalBoard(node: Node): Int {
         for (p: Int in row){
             val piece=when(p){
                 50 -> 100
-                -50 -> -120
+                -50 -> -100
                 15 -> 25
                 -15 -> -30
                 8, 9 -> 10
@@ -34,14 +37,6 @@ public fun evalBoard(node: Node): Int {
         }
     }
     return res
-}
-public fun evalParent(node: Node): Int {
-    var sum=0
-    for (next: Node in node.next){
-        sum+=evaluateNode(next)
-    }
-    node.value=sum
-    return sum
 }
 public fun applier(node: Node, side:Int, pred: (MutableList<Pair<Int, Int>>, Int, Int) -> Unit){
     for(y in 0..7){
