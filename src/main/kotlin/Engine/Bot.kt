@@ -7,32 +7,12 @@ class Bot(var root:Node, private val maxdepth:Int=4) {
 //    public fun evaluate(){
 //
 //    }
-private var isEnd: Int = when((maxdepth-1)%2){
-        0 -> maxdepth-1
-        else -> maxdepth-2
-    }
-
     public fun choose() : MutableList<MutableList<Int>> {
         val maxval=root.next.maxBy { it.value }.value
         val pruned=root.next.filter { it.value==maxval }
         val rng=abs(Random.nextInt()) %pruned.size
         root=pruned[rng]
         return clonemat(root.board)
-    }
-    public fun myturn(board: MutableList<MutableList<Int>>){
-        root.board= clonemat(board)
-        root.next.clear()
-        evaluateNode(root)
-        val gameOver=gameover(root)
-        if (gameOver!=0){
-            if (gameOver==1){
-                println("YOU LOSE!")
-            }
-            else{
-                println("YOU WIN!")
-            }
-            exitProcess(0)
-        }
     }
     public fun ponder(node: Node=root, depth:Int=1){
         if(depth==maxdepth) return
@@ -46,7 +26,7 @@ private var isEnd: Int = when((maxdepth-1)%2){
                 val n=Node(board = b, 0, mutableListOf())
                 ponder(n, depth+1)
                 if (depth==1) {
-                    evaluateNode(n)
+                    evaluateNode(n, 1)
                     n.next.clear()
                 }
                 node.next.addLast(n)
@@ -70,9 +50,10 @@ private var isEnd: Int = when((maxdepth-1)%2){
             ponder(n, depth+1)
         }
         if (depth==2) {
-            evaluateNode(node)
+            evaluateNode(node, -1)
             val lowval = node.next.minBy { it.value }.value
             val pruned = node.next.filter { it.value == lowval }
+            //val rng=abs(Random.nextInt())%pruned.size
             node.next = pruned.toMutableList()
         }
     }
