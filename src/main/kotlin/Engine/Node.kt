@@ -1,7 +1,7 @@
 package com.example.chess.Engine
 
 import kotlin.system.exitProcess
-const val PRESENT_IMPORTANCE=2
+const val PRESENT_IMPORTANCE=1
 data class Node(var board: MutableList<MutableList<Int>>, var value: Int, var next:MutableList<Node>)
 public fun evaluateNode(node: Node): Int{
     if (node.next.size==0)
