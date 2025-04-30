@@ -66,15 +66,14 @@ private var isEnd: Int = when((maxdepth-1)%2){
             }
         }
 
-        if (depth>2) {
-            evaluateNode(node)
-            val lowval = node.next.maxBy { it.value }.value
-            val pruned = node.next.filter { it.value < lowval }
-            //val rng=abs(Random.nextInt())%pruned.size
-            node.next = pruned.toMutableList()
-        }
         for (n in node.next){
             ponder(n, depth+1)
+        }
+        if (depth==2) {
+            evaluateNode(node)
+            val lowval = node.next.minBy { it.value }.value
+            val pruned = node.next.filter { it.value == lowval }
+            node.next = pruned.toMutableList()
         }
     }
     public fun makeMove(board:MutableList<MutableList<Int>>, y:Int, x:Int, pair:Pair<Int, Int>): MutableList<MutableList<Int>>{
